@@ -7,19 +7,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author yangqj
- * @date 2017/4/25
+ * @author lr
+ * @date 2018/1/23
  */
 public interface ResourcesService  {
     
     /**
-     * @param map
+     * 加载shiro 资源权限过滤器
      * @return
      */
-    List<Resources> loadUserResources(Map<String, Object> map);
+    Map<String, String> loadShiroFilter();
     
     /**
+     * @param userId
+     * @return
+     */
+    List<Resources> loadUserResources(Integer userId);
+    
+    /**
+     * 查询所有资源
      * @return
      */
     List<Resources> queryAll();

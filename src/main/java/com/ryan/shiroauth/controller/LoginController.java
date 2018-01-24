@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,7 +38,7 @@ public class LoginController {
         UsernamePasswordToken token=new UsernamePasswordToken(user.getUsername(),user.getPassword());
         try {
             subject.login(token);
-            return "redirect:usersPage";
+            return "index";
         }catch (LockedAccountException lae) {
             token.clear();
             request.setAttribute("msg", "用户已经被锁定不能登录，请与管理员联系！");
@@ -48,4 +49,19 @@ public class LoginController {
             return "login";
         }
     }
+    
+    @RequestMapping(value="/logout",method=RequestMethod.GET)
+    public String logout(RedirectAttributes redirectAttributes ){
+        //使用权限管理工具进行用户的退出，跳出登录，给出提示信息
+        SecurityUtils.getSubject().logout();
+        redirectAttributes.addFlashAttribute("msg", "您已安全退出");
+        return "redirect:/login";
+    }
+    
+    
+    @RequestMapping(value="/user")
+    public String user(){
+        return "user";
+    }
+    
 }

@@ -3,17 +3,34 @@ spring:
     name: ryan-shiro-auth
 
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/test
     username: root
     password: 123456
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
 
   redis:
     host: 127.0.0.1
     port: 6379
 
   thymeleaf:
+    prefi: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
     cache: false
     mode: LEGACYHTML5
 
@@ -22,3 +39,12 @@ mybatis:
   type-aliases-package: com.ryan.shiroauth.model
   mapper-locations: classpath:mapper/*.xml
 
+logging:
+  level:
+    tk:
+      mybatis: trace
+    com:
+      ryan: trace
+    org:
+      springframework:
+        web: DEBUG

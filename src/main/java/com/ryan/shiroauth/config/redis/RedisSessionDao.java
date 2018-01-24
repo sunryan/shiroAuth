@@ -19,14 +19,14 @@ import org.springframework.stereotype.Component;
  * @date 2018/1/23
  */
 @Component
-public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
+public class RedisSessionDao extends EnterpriseCacheSessionDAO {
     
-    private static Logger logger = LoggerFactory.getLogger(RedisSessionDAO.class);
+    private static Logger logger = LoggerFactory.getLogger(RedisSessionDao.class);
     
     /**
      * session 在redis过期时间是30分钟30*60
      */
-    private static int EXPIRE_TIME = 1800;
+    private static long EXPIRE_TIME = 1800;
     
     /**
      * redis key前缀
@@ -61,7 +61,7 @@ public class RedisSessionDAO extends EnterpriseCacheSessionDAO {
     @Override
     protected void doUpdate(Session session) {
         super.doUpdate(session);
-        logger.debug("获取session:{}", session.getId());
+        logger.debug("更新session:{}", session.getId());
         String key = PREFIX + session.getId().toString();
         if (!redisTemplate.hasKey(key)) {
             redisTemplate.opsForValue().set(key, session);

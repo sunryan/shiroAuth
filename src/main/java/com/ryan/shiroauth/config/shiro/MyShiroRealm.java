@@ -1,6 +1,6 @@
 package com.ryan.shiroauth.config.shiro;
 
-import com.ryan.shiroauth.config.redis.RedisSessionDAO;
+import com.ryan.shiroauth.config.redis.RedisSessionDao;
 import com.ryan.shiroauth.model.Resources;
 import com.ryan.shiroauth.model.User;
 import com.ryan.shiroauth.service.ResourcesService;
@@ -26,12 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Created by yangqj on 2017/4/21.
+ * @author lr
+ * @date 2018/1/23
  */
 public class MyShiroRealm extends AuthorizingRealm {
 
@@ -42,15 +41,13 @@ public class MyShiroRealm extends AuthorizingRealm {
     private ResourcesService resourcesService;
 
     @Autowired
-    private RedisSessionDAO redisSessionDAO;
+    private RedisSessionDao redisSessionDao;
 
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        User user= (User) SecurityUtils.getSubject().getPrincipal();//User{id=1, username='admin', password='3ef7164d1f6167cb9f2658c07d3c2f0a', enable=1}
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("userid",user.getId());
-        List<Resources> resourcesList = resourcesService.loadUserResources(map);
+        User user= (User) SecurityUtils.getSubject().getPrincipal();
+        List<Resources> resourcesList = resourcesService.loadUserResources(user.getId());
         // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         for(Resources resources: resourcesList){
@@ -95,7 +92,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             return ;
         }
         //获取所有session
-        Collection<Session> sessions = redisSessionDAO.getActiveSessions();
+        Collection<Session> sessions = redisSessionDao.getActiveSessions();
         //定义返回
         List<SimplePrincipalCollection> list = new ArrayList<SimplePrincipalCollection>();
         for (Session session:sessions){

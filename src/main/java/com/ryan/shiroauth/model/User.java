@@ -1,14 +1,11 @@
 package com.ryan.shiroauth.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable{
     private static final long serialVersionUID = -8736616045315083846L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private Integer id;
 
     private String username;
@@ -19,67 +16,49 @@ public class User implements Serializable{
      * 是否启用
      */
     private Integer enable;
+    
+    private List<Role> roleList;
 
-    /**
-     * @return id
-     */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @param id
-     */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * @return username
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * @param username
-     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    /**
-     * @return password
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @param password
-     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * 获取是否启用
-     *
-     * @return enable - 是否启用
-     */
     public Integer getEnable() {
         return enable;
     }
 
-    /**
-     * 设置是否启用
-     *
-     * @param enable 是否启用
-     */
     public void setEnable(Integer enable) {
         this.enable = enable;
     }
-
+    
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+    
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+    
     @Override
     public String toString() {
         return "User{" +

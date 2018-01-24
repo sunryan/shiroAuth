@@ -7,9 +7,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by yangqj on 2017/4/26.
+ * @author lr
+ * @date 2018/1/23
  */
-@Service("roleResourcesService")
+@Service
 public class RoleResourcesServiceImpl implements RoleResourcesService {
 
     @Override

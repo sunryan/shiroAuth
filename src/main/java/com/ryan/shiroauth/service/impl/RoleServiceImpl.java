@@ -11,7 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Service("roleService")
+/**
+ * @author lr
+ * @date 2018/1/23
+ */
+@Service
 public class RoleServiceImpl implements RoleService {
 
     @Resource
