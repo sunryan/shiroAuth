@@ -37,9 +37,9 @@ public class ResourcesServiceImpl implements ResourcesService {
         filterChainDefinitionMap.put("/css/**","anon");
         filterChainDefinitionMap.put("/js/**","anon");
         filterChainDefinitionMap.put("/img/**","anon");
-        filterChainDefinitionMap.put("/font-awesome/**","anon");
-        filterChainDefinitionMap.put("/static/**","anon");
-    
+        filterChainDefinitionMap.put("/images/**","anon");
+        filterChainDefinitionMap.put("/layui/**","anon");
+        
         //加载资源环境过滤
         List<Resources> resourcesList = queryAll();
         for(Resources resources : resourcesList){
