@@ -2,6 +2,7 @@ package com.ryan.shiroauth.config.shiro;
 
 import com.ryan.shiroauth.config.redis.RedisSessionDao;
 import com.ryan.shiroauth.model.Resources;
+import com.ryan.shiroauth.model.Role;
 import com.ryan.shiroauth.model.User;
 import com.ryan.shiroauth.service.ResourcesService;
 import com.ryan.shiroauth.service.UserService;
@@ -37,22 +38,21 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Resource
     private UserService userService;
 
-    @Resource
-    private ResourcesService resourcesService;
-
     @Autowired
     private RedisSessionDao redisSessionDao;
 
     //授权
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        User user= (User) SecurityUtils.getSubject().getPrincipal();
-        List<Resources> resourcesList = resourcesService.loadUserResources(user.getId());
-        // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
+        User user= (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        for(Resources resources: resourcesList){
-            info.addStringPermission(resources.getResurl());
+        for(Role role : user.getRoleList()){
+            info.addRole(role.getRoledesc());
+            for(Resources resources: role.getResourcesList()){
+                info.addStringPermission(resources.getResurl());
+            }
         }
+       
         return info;
     }
 
@@ -72,7 +72,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 user,
                 user.getPassword(),
-                ByteSource.Util.bytes(username),
+                ByteSource.Util.bytes(user.getSalt()),
                 getName()
         );
         // 当验证都通过后，把用户信息放在session里

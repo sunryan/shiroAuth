@@ -24,9 +24,9 @@ public class RedisSessionDao extends EnterpriseCacheSessionDAO {
     private static Logger logger = LoggerFactory.getLogger(RedisSessionDao.class);
     
     /**
-     * session 在redis过期时间是30分钟30*60
+     * session 在redis过期时间是30分钟30*60*1000(单位 ms)
      */
-    private static long EXPIRE_TIME = 1800;
+    public static long EXPIRE_TIME = 30 * 60 * 1000;
     
     /**
      * redis key前缀
@@ -42,6 +42,7 @@ public class RedisSessionDao extends EnterpriseCacheSessionDAO {
         Serializable sessionId = super.doCreate(session);
         logger.debug("创建session:{}", session.getId());
         redisTemplate.opsForValue().set(PREFIX + sessionId.toString(), session);
+        logger.info("同步session到redis key：{}", PREFIX + sessionId.toString());
         return sessionId;
     }
     
@@ -53,15 +54,19 @@ public class RedisSessionDao extends EnterpriseCacheSessionDAO {
         Session session = super.doReadSession(sessionId);
         if (session == null) {
             session = (Session) redisTemplate.opsForValue().get(PREFIX + sessionId.toString());
+            logger.info("尝试从redis中获取session");
+        }else{
+            logger.info("缓存中获取session");
         }
+        logger.info("获取session结果:{}", session);
         return session;
     }
     
     // 更新session的最后一次访问时间
     @Override
     protected void doUpdate(Session session) {
-        super.doUpdate(session);
         logger.debug("更新session:{}", session.getId());
+        super.doUpdate(session);
         String key = PREFIX + session.getId().toString();
         if (!redisTemplate.hasKey(key)) {
             redisTemplate.opsForValue().set(key, session);

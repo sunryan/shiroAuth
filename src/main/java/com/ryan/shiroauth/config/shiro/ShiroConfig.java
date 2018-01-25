@@ -4,26 +4,20 @@ package com.ryan.shiroauth.config.shiro;
  * @author lr
  * @date 2018/1/23
  */
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import cn.hutool.core.util.StrUtil;
 import com.ryan.shiroauth.config.redis.RedisCacheManager;
 import com.ryan.shiroauth.config.redis.RedisSessionDao;
-import com.ryan.shiroauth.model.Resources;
 import com.ryan.shiroauth.service.ResourcesService;
 import com.ryan.shiroauth.service.impl.ResourcesServiceImpl;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,6 +28,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ShiroConfig {
+    
+    private static final String SESSION_ID_NAME = "ryan-auth-session";
     
     
     @Bean
@@ -48,7 +44,9 @@ public class ShiroConfig {
     @Bean
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
-//        myShiroRealm.setCacheManager(redisCacheManager());
+        //设置密码匹配器
+        myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        myShiroRealm.setCacheManager(redisCacheManager());
         return myShiroRealm;
     }
     
@@ -72,6 +70,9 @@ public class ShiroConfig {
         // 删除过期的session
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setCacheManager(redisCacheManager());
+        Cookie cookie = new SimpleCookie(SESSION_ID_NAME);
+        cookie.setHttpOnly(true); //more secure, protects against XSS attacks
+//        sessionManager.setSessionIdCookie(cookie);
         System.out.println("===========================sessionManager end");
         return sessionManager;
     }
@@ -92,20 +93,6 @@ public class ShiroConfig {
         securityManager.setCacheManager(redisCacheManager());
         System.out.println("===========================securityManager end");
         return securityManager;
-    }
-    
-    @Bean
-    public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor() {
-        AuthorizationAttributeSourceAdvisor aasa = new AuthorizationAttributeSourceAdvisor();
-        aasa.setSecurityManager(securityManager());
-        return new AuthorizationAttributeSourceAdvisor();
-    }
-    
-    @Bean
-    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-        DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
-        daap.setProxyTargetClass(true);
-        return daap;
     }
     
     /**

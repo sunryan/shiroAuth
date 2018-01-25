@@ -33,9 +33,11 @@ public class ResourcesServiceImpl implements ResourcesService {
     public Map<String, String> loadShiroFilter() {
         Map<String, String> filterChainDefinitionMap = new HashMap<>();
         // 静态资源部受权限限制
+        filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/css/**","anon");
         filterChainDefinitionMap.put("/js/**","anon");
         filterChainDefinitionMap.put("/img/**","anon");
+        filterChainDefinitionMap.put("/font-awesome/**","anon");
         filterChainDefinitionMap.put("/static/**","anon");
     
         //加载资源环境过滤

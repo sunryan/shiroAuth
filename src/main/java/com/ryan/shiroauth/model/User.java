@@ -11,13 +11,26 @@ public class User implements Serializable{
     private String username;
 
     private String password;
+    
+    /**
+     * 加密密码的盐
+     */
+    private String salt;
 
     /**
      * 是否启用
      */
     private Integer enable;
     
+    /**
+     * 用户拥有角色
+     */
     private List<Role> roleList;
+    
+    /**
+     * 用户拥有资源
+     */
+    private List<Resources> resourcesList;
 
     public Integer getId() {
         return id;
@@ -67,5 +80,24 @@ public class User implements Serializable{
                 ", password='" + password + '\'' +
                 ", enable=" + enable +
                 '}';
+    }
+    
+    public List<Resources> getResourcesList() {
+        for(Role role : getRoleList()){
+            resourcesList.addAll(role.getResourcesList());
+        }
+        return resourcesList;
+    }
+    
+    public void setResourcesList(List<Resources> resourcesList) {
+        this.resourcesList = resourcesList;
+    }
+    
+    public String getSalt() {
+        return this.username + this.salt;
+    }
+    
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

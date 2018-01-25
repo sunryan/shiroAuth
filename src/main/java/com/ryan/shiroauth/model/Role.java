@@ -1,6 +1,7 @@
 package com.ryan.shiroauth.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Role implements Serializable{
     
@@ -11,6 +12,8 @@ public class Role implements Serializable{
     private String roledesc;
     
     private Integer selected;
+    
+    private List<Resources> resourcesList;
    
     public Integer getId() {
         return id;
@@ -34,5 +37,13 @@ public class Role implements Serializable{
 
     public void setSelected(Integer selected) {
         this.selected = selected;
+    }
+    
+    public List<Resources> getResourcesList() {
+        return resourcesList;
+    }
+    
+    public void setResourcesList(List<Resources> resourcesList) {
+        this.resourcesList = resourcesList;
     }
 }
