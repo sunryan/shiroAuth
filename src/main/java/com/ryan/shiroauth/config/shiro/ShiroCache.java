@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 
@@ -18,6 +20,8 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @SuppressWarnings("unchecked")
 public class ShiroCache<K, V> implements Cache<K, V> {
+    
+    private static Logger logger = LoggerFactory.getLogger(ShiroCache.class);
     
     private static final String REDIS_SHIRO_CACHE = "ryan-shiro-cache:";
     private String cacheKey;
@@ -32,12 +36,14 @@ public class ShiroCache<K, V> implements Cache<K, V> {
     
     @Override
     public V get(K key) throws CacheException {
+        logger.info("获取session 缓存key:{}", key);
         redisTemplate.boundValueOps(getCacheKey(key)).expire(globExpire, TimeUnit.MINUTES);
         return redisTemplate.boundValueOps(getCacheKey(key)).get();
     }
     
     @Override
     public V put(K key, V value) throws CacheException {
+        logger.info("添加session 缓存key:{} value:{}", key,value);
         V old = get(key);
         redisTemplate.boundValueOps(getCacheKey(key)).set(value);
         return old;
@@ -45,6 +51,7 @@ public class ShiroCache<K, V> implements Cache<K, V> {
     
     @Override
     public V remove(K key) throws CacheException {
+        logger.info("删除session 缓存key:{}", key);
         V old = get(key);
         redisTemplate.delete(getCacheKey(key));
         return old;

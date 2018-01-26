@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,14 +32,16 @@ public class ResourcesServiceImpl implements ResourcesService {
      */
     @Override
     public Map<String, String> loadShiroFilter() {
-        Map<String, String> filterChainDefinitionMap = new HashMap<>();
+        // 使用LinkedHashMap 保证顺序。 参考ShiroFilterFactoryBean 构造函数
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 静态资源部受权限限制
         filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/static/**","anon");
         filterChainDefinitionMap.put("/css/**","anon");
-        filterChainDefinitionMap.put("/js/**","anon");
         filterChainDefinitionMap.put("/img/**","anon");
-        filterChainDefinitionMap.put("/images/**","anon");
+        filterChainDefinitionMap.put("/js/**","anon");
         filterChainDefinitionMap.put("/layui/**","anon");
+        filterChainDefinitionMap.put("/druid/**","anon");
         
         //加载资源环境过滤
         List<Resources> resourcesList = queryAll();
@@ -48,6 +51,7 @@ public class ResourcesServiceImpl implements ResourcesService {
                 filterChainDefinitionMap.put(resources.getResurl(), permission);
             }
         }
+        filterChainDefinitionMap.put("/user", "roles[user]");
         filterChainDefinitionMap.put("/**", "authc");
         return filterChainDefinitionMap;
     }

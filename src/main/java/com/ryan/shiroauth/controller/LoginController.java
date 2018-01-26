@@ -58,14 +58,32 @@ public class LoginController {
         return "login";
     }
     
+    @RequestMapping(value="/")
+    public String defalutIndex(){
+        return "index";
+    }
+    
+    
     @RequestMapping(value="/index")
     public String index(){
         return "index";
     }
     
+    @RequestMapping(value="/403")
+    public String _403(){
+        return "403";
+    }
+    @RequestMapping(value="/404")
+    public String _404(){
+        return "404";
+    }
+    
+    
     @RequestMapping(value="/user")
     public String user(){
         return "user";
     }
+    
+    
     
 }

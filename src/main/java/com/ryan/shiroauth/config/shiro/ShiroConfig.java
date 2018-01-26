@@ -129,7 +129,6 @@ public class ShiroConfig {
         //未授权界面跳转403
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         //定义拦截器
-       
         shiroFilterFactoryBean.setFilterChainDefinitionMap(resourcesService().loadShiroFilter());
         System.out.println("===========================shiro-filter end");
         return shiroFilterFactoryBean;
