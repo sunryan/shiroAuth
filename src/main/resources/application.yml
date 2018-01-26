@@ -32,7 +32,10 @@ spring:
     suffix: .html
     encoding: UTF-8
     cache: false
+    cache-period: 0
     mode: LEGACYHTML5
+  template:
+    cache: false
 
 
 mybatis:

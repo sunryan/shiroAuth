@@ -72,7 +72,7 @@ public class ShiroConfig {
         sessionManager.setCacheManager(redisCacheManager());
         Cookie cookie = new SimpleCookie(SESSION_ID_NAME);
         cookie.setHttpOnly(true); //more secure, protects against XSS attacks
-//        sessionManager.setSessionIdCookie(cookie);
+        sessionManager.setSessionIdCookie(cookie);
         System.out.println("===========================sessionManager end");
         return sessionManager;
     }
@@ -119,7 +119,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean() {
         System.out.println("===========================shiro-filter start");
         //定义ShiroFilter工厂
-        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new RyanShiroFilterFactoryBean();
         // 注入安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面

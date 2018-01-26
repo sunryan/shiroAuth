@@ -21,7 +21,7 @@
     <!-- 顶部 -->
     <div class="layui-header header">
         <div class="layui-main">
-            <a href="#" class="logo">layui后台管理</a>
+            <a href="#" class="logo">ryan后台管理</a>
             <!-- 搜索 -->
             <div class="layui-form component">
                 <select name="modules" lay-verify="required" lay-search="">
@@ -77,7 +77,7 @@
                 <li class="layui-nav-item" mobile>
                     <a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>设置</cite></a>
                 </li>
-                <li class="layui-nav-item" mobile>
+                <li class="layui-nav-item " mobile>
                     <a href="javascript:;"><i class="iconfont icon-loginout"></i> 退出</a>
                 </li>
                 <li class="layui-nav-item lockcms" pc>
@@ -91,13 +91,12 @@
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" data-url="page/user/userInfo.html"><i class="iconfont icon-zhanghu" data-icon="icon-zhanghu"></i><cite>个人资料</cite></a></dd>
                         <dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>修改密码</cite></a></dd>
-                        <dd><a href="javascript:;"><i class="iconfont icon-loginout"></i><cite>退出</cite></a></dd>
+                        <dd><a th:href="@{/logout}"><i class="iconfont icon-loginout"></i><cite>退出</cite></a></dd>
                     </dl>
                 </li>
             </ul>
         </div>
     </div>
-    <!-- 左侧导航 -->
     <div class="layui-side layui-bg-black">
         <div class="user-photo">
             <a class="img" title="我的头像" ><img th:src="@{img/face.jpg}"></a>
@@ -131,7 +130,7 @@
     <p>请输入“123456”，否则不会解锁成功哦！！！</p>
 </div>
 <!-- 移动导航 -->
-<div class="site-tree-mobile layui-hide"><i class="layui-icon">&#xe602;</i></div>
+<div class="site-tree-mobile layui-hide"><!--<i class="layui-icon">&#xe602;</i>--></div>
 <div class="site-mobile-shade"></div>
 
 <script type="text/javascript" src="/static/layui/layui.js" th:src="@{/layui/layui.js}"></script>

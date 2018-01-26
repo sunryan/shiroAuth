@@ -37,6 +37,7 @@ public class ResourcesServiceImpl implements ResourcesService {
         // 静态资源部受权限限制
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/static/**","anon");
+        filterChainDefinitionMap.put("/favicon.ico","anon");
         filterChainDefinitionMap.put("/css/**","anon");
         filterChainDefinitionMap.put("/img/**","anon");
         filterChainDefinitionMap.put("/js/**","anon");
